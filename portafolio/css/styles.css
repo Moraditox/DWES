@@ -1,0 +1,125 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+section{
+    display: flex;
+}
+
+/* Sección de contenido */
+.container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* Sección Sobre Mí */
+.about-section {
+    background-color: #fff;
+    padding: 2rem 0;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.about-section ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.about-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Imagen */
+img{
+    width: 50%;
+    height: 30vw;
+    object-fit: contain;
+}
+
+/* Sección Contacto */
+.contact-section {
+    background-color: #f4f4f4;
+    padding: 2rem 0;
+}
+
+.contact-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.contact-section ul {
+    list-style-type: none;
+}
+
+.contact-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.contact-section ul li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.contact-section ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+footer p {
+    margin: 0;
+}
