@@ -4,7 +4,6 @@
     $b = 2;
     $c = 3;
 
-    echo `a: $a b: $b c: $c`;
     if($a>$b && $a>$c) {
         echo `a: $a`;
         if($b>$c){
