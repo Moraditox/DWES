@@ -10,7 +10,10 @@
     //Declaramos el array asociativo
     $meses = array(
         "Enero" => 31,
-        "Febrero" => 28,
+        "Febrero" => $Febrero = array(
+            "normal" => 28,
+            "bisiesto" => 29
+        ),
         "Marzo" => 31,
         "Abril" => 30,
         "Mayo" => 31,
@@ -24,6 +27,13 @@
     );
 
     foreach($meses as $mes => $dias){
-        echo "$mes tiene: $dias dias <br>";
+        if($mes == "Febrero"){
+            echo "Febrero cuando es: <br/>";
+            foreach($Febrero as $clave => $valor){
+                echo "- Un año $clave tiene $valor dias <br/>";
+            }
+        }else{
+            echo "$mes tiene: $dias dias <br>";
+        }
     }
 ?>
