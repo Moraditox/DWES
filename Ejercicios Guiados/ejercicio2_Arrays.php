@@ -24,7 +24,6 @@
     );
 
     foreach($meses as $mes => $dias){
-        echo "$mes tiene: $dias dias";
-        echo "<br>";
+        echo "$mes tiene: $dias dias <br>";
     }
 ?>
