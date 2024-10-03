@@ -26,9 +26,12 @@
         "Diciembre" => 31
     );
 
+    //Recorremos el array que tiene todas las claves y valores para despues imprimirlos por pantalla
     foreach($meses as $mes => $dias){
-        if($mes == "Febrero"){
-            echo "Febrero cuando es: <br/>";
+        //Comprobamos si el valor que tenemos en este momento es otro array
+        if(is_array($dias)){
+            echo "$mes cuando es: <br/>";
+            //Recorremos los valores del array asociativo que viene del array anterior que era indexado
             foreach($Febrero as $clave => $valor){
                 echo "- Un año $clave tiene $valor dias <br/>";
             }
