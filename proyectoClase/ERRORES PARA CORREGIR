@@ -1,0 +1,9 @@
+ERRORES PARA EL PROYECTO DEL CALENDARIO
+- Funcion a la cual le pasamos array de la semana santa (En funcion del año le añadimos jueves santo y viernes santo)
+  aDiasFestivos = array(cualquier estructura de array);
+
+- Hacemos todo el codigo php en el archvio confCalendario.php
+
+- Escribir el CSS con clases (diaActual, festivo)
+
+- Dias festivos locales de cordoba son 8 de septiembre y 24 de octubre
