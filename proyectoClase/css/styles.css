@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.hoy {
+    background-color: #90EE90; /* Verde claro */
+}
+
+/* Festivos nacionales en rojo */
+.festivo-nacional {
+    background-color: #FF6347;  /* Rojo tomate */
+    color: white;
+}
+
+/* Festivos autonómicos en azul */
+.festivo-autonomico {
+    background-color: #e45f5f;  /* Azul */
+    color: white;
+}
+
+/* Festivos locales en verde */
+.festivo-local {
+    background-color: #5e1515;  /* Verde */
+    color: white;
+}
