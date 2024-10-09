@@ -25,12 +25,12 @@ th {
 
 /* Festivos autonómicos en azul */
 .festivo-autonomico {
-    background-color: #e45f5f;  /* Azul */
+    background-color: #e45f5f;  /* Rojo clarito */
     color: white;
 }
 
 /* Festivos locales en verde */
 .festivo-local {
-    background-color: #5e1515;  /* Verde */
+    background-color: #5e1515;  /* Rojo oscuro */
     color: white;
 }

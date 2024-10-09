@@ -13,10 +13,22 @@
     ),
 
     "Ejercicios Guiados" => array(
-        "ejercicio1_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio1_Arrays.php",
-        "ejercicio2_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio2_Arrays.php",
-        "ejercicio3_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio3_Arrays.php",
-        "ejercicio4_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio4_Arrays.php",
+        "Arrays" => array(
+            "ejercicio1_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio1_Arrays.php",
+            "ejercicio2_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio2_Arrays.php",
+            "ejercicio3_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio3_Arrays.php",
+            "ejercicio4_Array.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/ejercicio4_Arrays.php",
+        ),
+        "Formularios" => array(
+            "formulario1.html" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/formulario1.html",
+            "formulario2.html" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/formulario2.html",
+            "form.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/form.php",
+            "formularioPersonal.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/formularioPersonal.php",
+            "procesa.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/formulario2.php",
+            "procesa_formulario1.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/procesa_formulario1.php",
+            "procesa_formulario2.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/procesa_formulario2.php",
+            "procesarDatos.php" => "2ºDAW/DWES/Ejercicios/Ejercicios Guiados/formularios/procesarDatos.php",
+        )
     ),
 
     "UD1" => array(
