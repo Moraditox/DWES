@@ -4,34 +4,46 @@
  * (Fecha de iniciacion)
  * @author Héctor Mora Sánchez
  */
-// Festivos nacionales
-$festivos_nacionales = array(
-    '1-1',   // Año Nuevo
-    '6-1',   // Epifanía del Señor
-    '1-5',   // Día del Trabajo
-    '12-10', // Fiesta Nacional de España
-    '1-11',  // Todos los Santos
-    '6-12',  // Día de la Constitución
-    '25-12'  // Navidad
-);
-
-// Festivos autonómicos (Andalucía)
-$festivos_autonomicos = array(
-    '28-2',  // Día de Andalucía
-    '28-3',  // Jueves Santo
-    '29-3'   // Viernes Santo
-);
-
-// Festivos locales (Córdoba)
-$festivos_locales = array(
-    '9-9',   // Virgen de la Fuensanta
-    '24-10'  // San Rafael
-);
+//VARIABLE QUE DETERMINA EL ESTADO DEL FORMULARIO
+$lProcesaFormulario = false;
 
 // Obtener el día actual
 $hoy = date('j');
 $mes = date('n');
 $anio = date('Y');
+
+if(isset($_POST['enviar'])){
+    $lProcesaFormulario = true;
+}
+
+if($lProcesaFormulario){
+    $mes = $_POST['mes'] + 1;  // Sumamos 1 porque $_POST['mes'] devuelve un índice (0-11)
+    $anio = $_POST['anio'];
+}
+
+// Festivos nacionales
+$festivos_nacionales = array(
+    '01-01',   // Año Nuevo
+    '06-01',   // Epifanía del Señor
+    '01-05',   // Día del Trabajo
+    '12-10',   // Fiesta Nacional de España
+    '01-11',   // Todos los Santos
+    '06-12',   // Día de la Constitución
+    '25-12'    // Navidad
+);
+
+// Festivos autonómicos (Andalucía)
+$festivos_autonomicos = array(
+    '28-02',  // Día de Andalucía
+    '28-03',  // Jueves Santo
+    '29-03'   // Viernes Santo
+);
+
+// Festivos locales (Córdoba)
+$festivos_locales = array(
+    '09-09',  // Virgen de la Fuensanta
+    '24-10'   // San Rafael
+);
 
 // Obtener el primer día del mes
 $primer_dia_mes = mktime(0, 0, 0, $mes, 1, $anio);
@@ -44,7 +56,7 @@ $primer_dia_semana = date('w', $primer_dia_mes);
 for ($dia = 1; $dia <= $dias_mes; $dia++) {
     $dia_semana = date('w', mktime(0, 0, 0, $mes, $dia, $anio));
     if ($dia_semana == 0) { // Si es domingo
-        $festivos_nacionales[] = "$dia-$mes"; // Consideramos los domingos como festivos nacionales
+        $festivos_nacionales[] = sprintf("%02d-%02d", $dia, $mes);  // Agregamos con formato correcto
     }
 }
 
@@ -63,9 +75,25 @@ $meses_anio = array ('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Jul
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
+    <h1>¿En qué fecha estás?</h1>
+
+    <form action="" method="POST">
+        <select name="mes">
+            <?php
+                for($i = 0; $i < count($meses_anio); $i++){
+                    $mesActual = $meses_anio[$i];
+                    $selected = ($i + 1 == $mes) ? 'selected' : '';  // Si coincide con el mes seleccionado, lo marcamos
+                    echo "<option value='$i' $selected> $mesActual </option>";
+                }
+            ?>
+        </select>
+        <input type="number" name="anio" placeholder="Año" value="<?php echo $anio ?>"/>
+        <input type="submit" name="enviar" value="Enviar">
+    </form>
+
     <!-- Incluir el calendario generado en PHP -->
     <?php
-        $mes_actual = $meses_anio[$mes - 1];
+        $mes_actual = $meses_anio[$mes - 1]; // Corregir para obtener el nombre del mes
         echo "<h2>Calendario de $mes_actual del $anio</h2>";
         // Mostrar el calendario
         echo "<table>";
@@ -82,7 +110,7 @@ $meses_anio = array ('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Jul
 
         // Mostrar los días del mes
         for ($dia = 1; $dia <= $dias_mes; $dia++) {
-            $fecha_actual = "$dia-$mes";
+            $fecha_actual = sprintf("%02d-%02d", $dia, $mes);  // Formato de fecha
 
             // Verificar si es festivo nacional, autonómico o local
             $es_festivo_nacional = in_array($fecha_actual, $festivos_nacionales);
@@ -111,12 +139,6 @@ $meses_anio = array ('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Jul
             if (($dia + $primer_dia_semana) % 7 == 0 && $dia != $dias_mes) {
                 echo "</tr><tr>";
             }
-        }
-
-        // Rellenar las últimas celdas si el mes no termina en sábado
-        while (($dia + $primer_dia_semana) % 7 != 1) {
-            echo "<td></td>";
-            $dia++;
         }
 
         echo "</tr>";

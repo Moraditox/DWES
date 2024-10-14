@@ -46,8 +46,8 @@
      } else {
      ?>
      <form action="" method="post" novalidate>
-         <input type="text" name="nombre" placeholder="Nombre" value=""/><br/>
-         <input type="text" name="apellidos" placeholder="Apellidos" value=""/><br/>
+         <input type="text" name="nombre" placeholder="Nombre" value="<?php echo $nombre ?>"/><br/>
+         <input type="text" name="apellidos" placeholder="Apellidos" value="<?php echo $apellidos ?>"/><br/>
          <input type="email" name="email" placeholder="Email" value=""/><br/>
  
          <input type="submit" name="enviar" value="Enviar"/>
