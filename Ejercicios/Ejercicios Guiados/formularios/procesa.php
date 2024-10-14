@@ -6,15 +6,24 @@
  * @author Héctor Mora Sánchez
  */
 
- //CONTRL DE ACCESO AL FORMULARIO
- if(!isset($_POST["enviar"])){
-    header("location:form.php");
+ $Datos = array(
+   "Nombre" => $_POST["nombre"],
+   "Apellidos" => $_POST["apellidos"],
+   "Email" => $_POST["email"]
+ );
+
+ //CONTROL DE ACCESO AL FORMULARIO
+ if (!isset($_POST["enviar"])){
+   header("location:ejemplo4.php");
  }
 
- echo "Datos del formulario: <br/>";
+ echo "Datos de formularios: <br/>";
 
- foreach($_POST as $clave => $valor){
-    echo $valor;
-    echo "<br/>";
+ foreach($Datos as $clave => $valor) {
+    if ($clave == "email" && !filter_var($valor, FILTER_VALIDATE_EMAIL)) {
+      header("location:ejemplo4.php");
+    }else{
+      echo "$clave:  $valor <br/>";
+    }
  }
 ?>
