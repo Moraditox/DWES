@@ -41,20 +41,23 @@
 
     "UD3" => array(
         "Condicionales" => array(
-            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Condicionales/ejercicio1.php",
-            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Condicionales/ejercicio2.php",
-            "ejercicio3.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Condicionales/ejercicio3.php",
-            "ejercicio5.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Condicionales/ejercicio5.php",
+            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/Condicionales/ejercicio1.php",
+            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/Condicionales/ejercicio2.php",
+            "ejercicio3.php" => "2ºDAW/DWES/Ejercicios/UD3/Condicionales/ejercicio3.php",
+            "ejercicio5.php" => "2ºDAW/DWES/Ejercicios/UD3/Condicionales/ejercicio5.php",
         ),
         "Bucles" => array(
-            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Bucles/ejercicio1.php",
-            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Bucles/ejercicio2.php",
-            "ejercicio3.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Bucles/ejercicio3.php",
-            "ejercicio4.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Bucles/ejercicio5.php",
+            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/Bucles/ejercicio1.php",
+            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/Bucles/ejercicio2.php",
+            "ejercicio3.php" => "2ºDAW/DWES/Ejercicios/UD3/Bucles/ejercicio3.php",
+            "ejercicio4.php" => "2ºDAW/DWES/Ejercicios/UD3/Bucles/ejercicio5.php",
         ),
         "Arrays" => array(
-            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Arrays/ejercicio1.php",
-            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/PHP/Arrays/ejercicio2.php",
+            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/Arrays/ejercicio1.php",
+            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD3/Arrays/ejercicio2.php",
+        ),
+        "Formularios" => array(
+            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/Formularios/ejercicio1.php",
         ),
     ),
  );
