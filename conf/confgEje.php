@@ -60,4 +60,13 @@
             "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD3/Formularios/ejercicio1.php",
         ),
     ),
+
+    "UD4" => array(
+        "Cookies" => array(
+            "ejercicio1.php" => "2ºDAW/DWES/Ejercicios/UD4/Cookies/ejercicio1.php",
+            "ejercicio2.php" => "2ºDAW/DWES/Ejercicios/UD4/Cookies/ejercicio2.php",
+            "ejercicio3.php" => "2ºDAW/DWES/Ejercicios/UD4/Cookies/ejercicio3.php",
+            "ejercicio4.php" => "2ºDAW/DWES/Ejercicios/UD4/Cookies/ejercicio4.php",
+        ),
+    ),
  );
