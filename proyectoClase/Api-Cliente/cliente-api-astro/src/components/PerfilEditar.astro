@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil de Usuario</title>
+</head>
+<body class="bg-gray-100 p-6">
+    <header class="bg-blue-500 text-white text-center p-4">
+        <h1 class="text-2xl font-bold">Editar Perfil de Usuario</h1>
+    </header>
+    <main class="container mx-auto mt-6">
+        <section class="bg-white shadow-md rounded p-4">
+            <h2 class="text-lg font-bold">Datos del usuario</h2>
+            <form action="" method="POST">
+                <label for="nombre"><strong>Nombre:</strong></label>
+                <input type="text" id="nombre" class="border p-2 rounded w-full mb-4" required>
+                <label for="email"><strong>Email:</strong></label>
+                <input type="email" id="email" class="border p-2 rounded w-full mb-4" required>
+                <label for="password"><strong>Nueva Contraseña:</strong></label>
+                <input type="password" id="password" class="border p-2 rounded w-full mb-4" required>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">Guardar Cambios</button>
+            </form>
+        </section>
+    </main>
+    <script type="module" defer>
+        let usuario = null;
+        const token = localStorage.getItem('authToken');
+
+        async function cargarUsuario() {
+            try {
+                const responseUser = await fetch(`http://centroscivicos.local/api/user`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!responseUser.ok) throw new Error('Usuario no encontrado');
+                usuario = await responseUser.json();
+
+                const nombreInput = document.getElementById('nombre');
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+                if (nombreInput && emailInput && passwordInput) {
+                    nombreInput.value = usuario[0].nombre;
+                    emailInput.value = usuario[0].email;
+                    passwordInput.value = usuario[0].password;
+                }
+            } catch (error) {
+                console.error('Error al cargar la información del usuario:', error);
+            }
+        }
+
+        async function guardarCambios() {
+            try {
+                const nombreInput = document.getElementById('nombre');
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+                let nombre = '';
+                let email = '';
+                let password = '';
+                if (nombreInput && emailInput && passwordInput) {
+                    nombre = nombreInput.value;
+                    email = emailInput.value;
+                    password = passwordInput.value;
+                }
+
+                const response = await fetch(`http://centroscivicos.local/api/user`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ 
+                        nombre: nombre, 
+                        email: email,
+                        password: password
+                    })
+                });
+                if (!response.ok) throw new Error('Error al actualizar el usuario');
+                alert('Usuario actualizado correctamente');
+            } catch (error) {
+                console.error('Error al actualizar el usuario:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarUsuario);
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                await guardarCambios();
+                window.location.href = '/perfil';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# No redirigir las solicitudes a carpetas de recursos estáticos (CSS, JS, imágenes, etc.)
+RewriteCond %{REQUEST_URI} ^/(styles|css|script|imagenes) [NC]
+RewriteRule .* - [L]
+
+# Redirige todo lo demás a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Para manejar la autorización (opcional, si es necesario)
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]

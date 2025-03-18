@@ -1,0 +1,119 @@
+---
+import "../styles/global.css";
+
+const { id } = Astro.params;
+
+let centro = null;
+let instalaciones = [];
+let actividades = [];
+
+try {
+    // Obtener información del centro
+    const responseCentro = await fetch(`http://centroscivicos.local/api/centros/${id}`);
+    if (!responseCentro.ok) throw new Error('Centro no encontrado');
+    centro = await responseCentro.json();
+
+    // Obtener instalaciones
+    const responseInstalaciones = await fetch(`http://centroscivicos.local/api/centros/${id}/instalaciones`);
+    if (!responseInstalaciones.ok) throw new Error('Instalaciones no encontradas');
+    instalaciones = await responseInstalaciones.json();
+
+    // Obtener actividades
+    const responseActividades = await fetch(`http://centroscivicos.local/api/centros/${id}/actividades`);
+    if (!responseActividades.ok) throw new Error('Actividades no encontradas');
+    actividades = await responseActividades.json();
+
+} catch (error) {
+    console.error('Error al cargar la información:', error);
+}
+---
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{centro?.nombre || 'Centro no encontrado'}</title>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <a href="/" class="float-right mb-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Volver a Centros</a>
+
+        {centro ? (
+            <>
+                <h1 class="text-3xl font-bold text-blue-700">{centro.nombre}</h1>
+                <p class="text-gray-600 mt-2"><strong>Dirección:</strong> {centro.direccion}</p>
+                <p class="text-gray-600"><strong>Teléfono:</strong> {centro.telefono}</p>
+                <p class="text-gray-600"><strong>Horario:</strong> {centro.horario}</p>
+
+                <div class="mt-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-semibold text-gray-700">Instalaciones</h2>
+                        <div id={`button-container`} class="hidden mt-4">
+                            <a href={`/Reserva/${id}`} class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transform transition-all duration-200">
+                                Reservar Instalaciones
+                            </a>
+                        </div>
+                    </div>
+                    {instalaciones.length > 0 ? (
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            {instalaciones.map((instalacion: {id: number, nombre:string, descripcion: string, capacidad_maxima: number}) => (
+                                <div class="p-4 border rounded-lg shadow hover:shadow-md transition bg-gray-50" data-key={instalacion.id}>
+                                    <h3 class="text-2xl font-medium text-blue-600">{instalacion.nombre}</h3>
+                                    <p class="text-gray-700"><strong>Descripción:</strong> {instalacion.descripcion}</p>
+                                    <p class="text-gray-700"><strong>Capacidad Máxima:</strong> {instalacion.capacidad_maxima}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p class="text-gray-500 mt-2">No hay instalaciones registradas.</p>
+                    )}
+                </div>
+
+                <div class="mt-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-semibold text-gray-700">Actividades</h2>
+                        <div id={`button-container-actividad`} class="hidden mt-4">
+                            <a href={`/Inscripcion/${id}`} class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 transform transition-all duration-200">
+                                Inscribirse en las Actividades
+                            </a>
+                        </div>
+                    </div>
+                    {actividades.length > 0 ? (
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            {actividades.map((actividad: {id: number, nombre: string, descripcion: string, fecha_inicio: string,
+                                fecha_fin: string, horario: string, plazas: number
+                            }) => (
+                                <div class="p-4 border rounded-lg shadow hover:shadow-md transition bg-gray-50" data-key={actividad.id}>
+                                    <h3 class="text-2xl font-medium text-blue-600">{actividad.nombre}</h3>
+                                    <p class="text-gray-700"><strong>Descripción:</strong> {actividad.descripcion}</p>
+                                    <p class="text-gray-700"><strong>Fecha:</strong> {new Date(actividad.fecha_inicio).toLocaleDateString()} - {new Date(actividad.fecha_fin).toLocaleDateString()}</p>
+                                    <p class="text-gray-700"><strong>Horario:</strong> {actividad.horario}</p>
+                                    <p class="text-gray-700"><strong>Aforo:</strong> {actividad.plazas}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p class="text-gray-500 mt-2">No hay actividades disponibles.</p>
+                    )}
+                </div>
+            </>
+        ) : (
+            <p class="text-gray-500 text-center mt-6">Centro no encontrado.</p>
+        )}
+    </div>
+
+    <!-- Script para validar el token y mostrar los botones -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isTokenValid = localStorage.getItem('authToken') !== null;
+            if (isTokenValid) {
+                // Mostrar los botones de reserva e inscripción
+                const buttonContainers = document.querySelectorAll('.hidden');
+                buttonContainers.forEach(container => {
+                    container.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

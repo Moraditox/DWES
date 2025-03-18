@@ -1,0 +1,5 @@
+DBHOST="localhost"
+DBNAME="Nombre BBDD"
+DBUSER="Nombre Usuario que se conecta a esa BBDD"
+DBPASS="Contraseña de ese usuario"
+DBPORT="3306"

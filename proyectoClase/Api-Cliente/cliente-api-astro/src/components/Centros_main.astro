@@ -1,0 +1,128 @@
+---
+import "../styles/global.css";
+
+// Definir las interfaces para los tipos de datos
+interface Centro {
+    id: number;
+    nombre: string;
+    direccion: string;
+    telefono: string;
+}
+
+let centros: Centro[] = [];
+
+try {
+    // Obtener información de los centros cívicos
+    const responseCentros = await fetch("http://centroscivicos.local/api/centros/");
+    if (!responseCentros.ok) {
+        throw new Error(`Error en la petición: ${responseCentros.status}`);
+    }
+    centros = await responseCentros.json();
+
+} catch (error) {
+    console.error("Error al obtener los centros cívicos:", error);
+}
+
+function buscar() {
+    console.log("entre");
+    const nombreCentro = (document.getElementById("filter-nombre") as HTMLInputElement)?.value.trim().toLowerCase() || "";
+
+    // Filtrar centros por nombre
+    const centrosFiltrados = centros.filter(centro => centro.nombre.toLowerCase().includes(nombreCentro));
+
+    // Mostrar resultados en el DOM
+    mostrarResultados("centro-list-container", centrosFiltrados);
+}
+
+function mostrarResultados(idLista: string, datos: Centro[]) {
+    const lista = document.getElementById(idLista);
+    if (!lista) {
+        console.error(`Elemento con id ${idLista} no encontrado.`);
+        return;
+    }
+    lista.innerHTML = "";
+
+    if (datos.length === 0) {
+        const p = document.createElement("p");
+        p.textContent = "No se encontraron resultados.";
+        p.className = "text-center text-gray-500 text-lg p-8";
+        lista.appendChild(p);
+        return;
+    }
+
+    datos.forEach((centro: Centro) => {
+        const div = document.createElement("div");
+        div.className = "flex justify-between items-center p-4 border border-gray-300 rounded-lg mb-4 transition-transform transform hover:scale-105 hover:shadow-lg";
+        div.innerHTML = `
+            <div class="flex-1">
+                <h2 class="text-xl font-medium text-gray-800">${centro.nombre}</h2>
+                <p class="text-gray-600"><strong>Dirección:</strong> ${centro.direccion}</p>
+                <p class="text-gray-600"><strong>Teléfono:</strong> ${centro.telefono}</p>
+            </div>
+            <a href="/Centros/${centro.id}" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">Ver centro</a>
+        `;
+        lista.appendChild(div);
+    });
+}
+
+console.log(typeof window);
+
+if (typeof window !== "undefined") {
+    console.log("entre");
+    document.getElementById("filter")?.addEventListener("click", function (event) {
+        event.preventDefault();
+        console.log("entre");
+        buscar();
+    });
+}
+---
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centros Cívicos</title>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-blue-700 text-center mb-6">Centros Cívicos</h1>
+
+        <!-- Formulario de filtro -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-700">Buscar por:</h2>
+            <form id="search-form" class="flex gap-4">
+                <div>
+                    <label for="filter-nombre" class="block text-sm text-gray-600">Nombre del centro</label>
+                    <input type="text" id="filter-nombre" class="mt-1 p-2 border rounded" placeholder="Buscar centro...">
+                </div>
+                <div class="self-end">
+                    <input type="submit" id="filter" value="Filtrar" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"></input>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de centros cívicos -->
+        <div id="centro-list-container">
+            {centros.length > 0 ? (
+                <>
+                    {centros.map((centro: Centro) => (
+                        <div class="flex justify-between items-center p-4 border border-gray-300 rounded-lg mb-4 transition-transform transform hover:scale-105 hover:shadow-lg">
+                            <div class="flex-1">
+                                <h2 class="text-xl font-medium text-gray-800">{centro.nombre}</h2>
+                                <p class="text-gray-600"><strong>Dirección:</strong> {centro.direccion}</p>
+                                <p class="text-gray-600"><strong>Teléfono:</strong> {centro.telefono}</p>
+                            </div>
+                            <a href={`/Centros/${centro.id}`} class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">Ver centro</a>
+                        </div>
+                    ))}
+                </>
+            ) : (
+                <p class="text-center text-gray-500 text-lg p-8">No hay centros cívicos disponibles.</p>
+            )}
+        </div>
+    </div>
+
+    <script defer>
+    </script>
+</body>
+</html>

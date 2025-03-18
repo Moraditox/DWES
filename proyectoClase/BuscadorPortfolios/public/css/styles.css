@@ -1,0 +1,493 @@
+:root {
+    --primary-color: #A339FA;
+    --secondary-color: #E239FA;
+    --text-color: #FFFFFF;
+}
+
+/* Estilos para la cabecera */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-color);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+header h1 {
+    color: var(--text-color);
+    margin-left: 10px;
+    margin-top: -4px;
+    font-size: 40px;
+}
+
+#logo {
+    width: 99px;
+    margin-bottom: -37px;
+    transition: 1s;
+}
+#logo:hover{
+    transform: scale(1.3);
+}
+
+header nav ul{
+    margin: 30px 10px;
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+header nav ul li {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+header nav ul li:hover {
+    transform: scale(1.1);
+}
+
+header nav ul li a img {
+    width: 30px;
+}
+
+/* Estilos para el buscador de portfolios */
+.section-buscador {
+    display: grid;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    justify-self: end;
+}
+
+.section-buscador input[type="text"] {
+    margin-right: 10px;
+    width: 20rem;
+    height: 2rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: 1s;
+    border: 0;
+    outline: 2px solid var(--secondary-color);
+}
+
+.section-buscador select {
+    margin-right: 10px;
+    height: 3rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: 1s;
+    border: 0;
+    outline: 2px solid var(--secondary-color);
+}
+
+.section-buscador input[type="text"]:focus {
+    transform: scale(1.05);
+}
+
+.section-buscador button{
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.section-buscador button:hover {
+    transform: scale(1.05);
+}
+
+/*Barra de progreso*/
+@keyframes grow-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  
+#progress {
+    z-index: 1000;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%; height: 0.4em;
+    background: var(--secondary-color);
+    transform-origin: 0 50%;
+    animation: grow-progress auto linear;
+    animation-timeline: scroll();
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--text-color);
+    height: 100vh;
+    padding-top: 132px;
+    overflow: auto;
+}
+
+/* Estilos para el menú desplegable */
+.nav-menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 2px;
+}
+
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.User-icon-img {
+    width: 40px;
+    height: 40px;
+    margin-top: -45px;
+    border-radius: 50%;
+}
+
+.user-name {
+    color: black;
+    font-size: 16px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 0;
+    transform: translateX(-6%);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    cursor: pointer;
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    transform: scale(1.1);
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.close {
+    width: 15px;
+    color: var(--primary-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    justify-self: end;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--secondary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos para los mensajes */
+.mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: fixed;
+    top: 80px; /* Ajustar según la altura de tu cabecera */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+}
+
+.mensaje-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: fixed;
+    top: 80px; /* Ajustar según la altura de tu cabecera */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+}
+
+/*Estilos para el formulario*/
+#div-form {
+    display: grid;
+    justify-content: center;
+}
+
+#div-form h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: -15px;
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--secondary-color);
+}
+
+/* Estilos para el formulario de inicio de sesión */
+#div-form form {
+    background-color: #fafafa;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px var(--secondary-color);
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: 1s;
+}
+
+.div-radio-button {
+    display: block;
+}
+
+#div-form label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="file"],
+input[type="password"],
+select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: 1s;
+    border: 0;
+    outline: 1px solid var(--secondary-color);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus,
+input[type="password"]:focus {
+    transform: scale(1.05);
+}
+
+input[type="submit"] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 1s;
+}
+
+#div-form input[type="submit"]:hover {
+    transform: scale(1.05);
+    background-color: var(--secondary-color);
+}
+
+/* Estilos para la sección de portafolio */
+.section-portfolio {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-items: center;
+    justify-self: center;
+    width: 70%;
+    gap: 5vw;
+    padding: 10px;
+    background-color: rgb(224, 224, 224);
+    border-radius: 8px;
+}
+
+.section-portfolio article {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+    justify-items: center;
+    gap: 5px;
+    width: 20vw;
+    height: 60vh;
+    padding: 10px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.section-portfolio article p {
+    margin-top: 100px;
+    text-align: center;
+    font-size: 4rem;
+    color: #333;
+}
+
+.section-portfolio article a {
+    margin-top: -55px;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+}
+
+.section-portfolio article img {
+    width: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.section-portfolio article button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.section-portfolio article button a {
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+}
+
+.section-portfolio article button:hover {
+    transform: scale(1.05);
+    background-color: var(--secondary-color);
+}
+
+/* Estilos para la pagina de los perfiles */
+.div-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 25vw;
+    height: 33vh;
+    border-radius: 8px;
+    justify-self: center;
+}
+
+.div-perfil .img-perfil {
+    margin-top: 10px;
+    width: 220px;
+    height: 220px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.div-añadir{
+    display: flex;
+    justify-content: center;
+}
+
+.añadir-boton {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.article-full {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(900px, 1fr));
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.article {
+    box-shadow: 0 0 10px black;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.article h2 {
+    text-align: center;
+}
+
+.button-container {
+    margin-top: auto;
+    text-align: right;
+}
+
+.button-container a{
+    background-color: var(--primary-color);
+    text-decoration: none;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button-container-perfil {
+    margin-top: auto;
+    text-align: center;
+}
+
+.button-container-perfil a{
+    background-color: var(--primary-color);
+    text-decoration: none;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: var(--primary-color);
+    color: #333;
+    text-align: center;
+    bottom: 0;
+}

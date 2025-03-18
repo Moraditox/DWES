@@ -1,0 +1,9 @@
+---
+---
+<script>
+    if (typeof window !== 'undefined') {
+        // Ahora puedes usar localStorage solo si estamos en el navegador
+        localStorage.removeItem('authToken');
+        window.location.href = '/';  // Redirigir a la página principal
+    }
+</script>

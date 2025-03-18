@@ -1,0 +1,97 @@
+---
+import "../styles/global.css";
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Centros Cívicos</title>
+    <script>
+        const token: string | null = localStorage.getItem('authToken');
+        // Función para verificar el token en el localStorage
+        function checkAuth(): boolean {
+            
+            // Si no hay token o está vacío, no está autenticado
+            if (!token || token === '') {
+                return false;
+            }
+
+            // Si el token es un JWT, intentamos decodificarlo
+            if (isValidJWT(token)) {
+                const decoded = decodeJWT(token);
+                if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+                    // Si el token ha expirado, retornamos false
+                    return false;
+                }
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Función para comprobar si el token tiene un formato JWT
+        function isValidJWT(token: string): boolean {
+            const parts = token.split('.');
+            return parts.length === 3; // Un JWT válido tiene 3 partes separadas por '.'
+        }
+
+        // Función para decodificar un JWT (sin verificar la firma)
+        interface JwtPayload {
+            exp?: number;
+            [key: string]: any;
+        }
+
+        function decodeJWT(token: string): JwtPayload {
+            const parts = token.split('.');
+            const decodedPayload = atob(parts[1]); // Decodificar la parte del payload
+            return JSON.parse(decodedPayload);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAuthenticated = checkAuth();
+            const menuContainer = document.getElementById('menu-container');
+
+            // Comprobamos si menuContainer no es null
+            if (menuContainer) {
+                // Cambiar el contenido del menú dependiendo de si el usuario está autenticado
+                if (isAuthenticated) {
+                    menuContainer.innerHTML = `
+                        <div class="flex justify-end items-center">
+                            <div class="flex gap-4">
+                                <a href="/perfil" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transform transition-all duration-200 hover:scale-105">Perfil</a>
+                                <a href="/logout" class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-500 transform transition-all duration-200 hover:scale-105">Cerrar sesión</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    menuContainer.innerHTML = `
+                        <div class="flex justify-end items-center">
+                            <div class="flex gap-4">
+                                <a href="/registro" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-400 transform transition-all duration-200 hover:scale-105">Registrarse</a>
+                                <a href="/login" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-400 transform transition-all duration-200 hover:scale-105">Login</a>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                console.error('No se encontró el contenedor del menú');
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans leading-relaxed">
+    <header class="bg-blue-800 p-4 fixed top-0 w-full z-10 shadow-lg flex justify-between items-center">
+        <a href="/" class="text-white text-2xl font-bold">
+            Centros Cívicos
+        </a>
+        <!-- Aquí se insertará dinámicamente el menú dependiendo del estado de autenticación -->
+        <div id="menu-container"></div>
+    </header>
+
+    <main class="mt-24 p-6 text-center">
+        <!-- Aquí puedes agregar contenido en el main -->
+    </main>
+</body>
+</html>

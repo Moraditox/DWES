@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteRule ^(css|script|imagenes)($|/) - [L]
+RewriteRule ^(.*)$ index.php [L]

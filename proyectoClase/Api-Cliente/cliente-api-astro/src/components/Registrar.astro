@@ -1,0 +1,79 @@
+---
+import "../styles/global.css";
+---
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("registroForm");
+
+    // Verificamos si el formulario existe antes de acceder a él
+    if (form) {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const nombre = (document.getElementById("nombre") as HTMLInputElement).value;
+            const email = (document.getElementById("email") as HTMLInputElement).value;
+            const password = (document.getElementById("password") as HTMLInputElement).value;
+
+            try {
+                const response = await fetch("http://centroscivicos.local/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert("El usuario " + nombre + " ha sido registrado con éxito");
+                    window.location.href = "/login"; // Redirigir a la página de login
+                } else {
+                    alert("Error al registrar usuario");
+                }
+            } catch (error) {
+                console.error("Error en la petición:", error);
+                alert("Hubo un problema con la conexión");
+            }
+        });
+    } else {
+        console.error("Error: No se encontró el formulario en el DOM.");
+    }
+});
+</script>
+
+<!-- Formulario en el mismo archivo -->
+<div class="flex justify-center items-center bg-gray-100">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+      <h1 class="text-2xl font-bold text-center text-gray-700 mb-6">Registro de Usuario</h1>
+      
+      <form id="registroForm" class="space-y-4">
+        <div>
+          <label for="nombre" class="block text-sm font-medium text-gray-600">Nombre</label>
+          <input type="text" id="nombre" placeholder="Nombre" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+  
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-600">E-mail</label>
+          <input type="email" id="email" placeholder="Email" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+  
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+          <input type="password" id="password" placeholder="Contraseña" required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+  
+        <button type="submit"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-200">
+          Registrar
+        </button>
+      </form>
+    </div>
+  </div>

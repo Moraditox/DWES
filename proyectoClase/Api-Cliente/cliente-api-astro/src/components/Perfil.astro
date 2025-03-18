@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centros Cívicos</title>
+    <script>
+        let usuario = null;
+        let centros = null;
+        let instalaciones: any[] = [];
+        let actividades: any[] = [];
+        let reservas = [];
+        let inscripciones = [];
+        const nombresInstalaciones = [];
+        const nombresCentros: string[] = [];
+        const token = localStorage.getItem('authToken');
+
+        try {
+            // Obtener información del centro
+            const responseUser = await fetch(`http://centroscivicos.local/api/user`,{
+                    method: 'GET',  // Tipo de solicitud
+                    headers: {
+                    'Content-Type': 'application/json',  // Indicamos el tipo de contenido
+                    'Authorization': `Bearer ${token}`   // Pasamos el token en el encabezado Authorization
+                }
+            });
+            if (!responseUser.ok) throw new Error('Usuario no encontrado');
+            usuario = await responseUser.json();
+
+            // Mostrar datos del usuario
+            const nombreElement = document.getElementById('nombre');
+            if (nombreElement) {
+                nombreElement.textContent = usuario[0].nombre;
+            }
+            const emailElement = document.getElementById('email');
+            if (emailElement) {
+                emailElement.textContent = usuario[0].email;
+            }
+
+            // Obtener información del centro
+            const responseCentro = await fetch(`http://centroscivicos.local/api/centros/`);
+            if (!responseCentro.ok) throw new Error('Centro no encontrado');
+            centros = await responseCentro.json();
+
+            for(let centro of centros){
+                const id = centro.id;
+
+                // Obtener instalaciones
+                const responseInstalaciones = await fetch(`http://centroscivicos.local/api/centros/${id}/instalaciones`);
+                if (!responseInstalaciones.ok) throw new Error('Instalaciones no encontradas');
+                const nuevasInstalaciones = await responseInstalaciones.json();
+                nuevasInstalaciones.forEach((nuevaInstalacion: any) => {
+                    if (!instalaciones.some(instalacion => instalacion.id === nuevaInstalacion.id)) {
+                        instalaciones.push(nuevaInstalacion);
+                    }
+                });
+                instalaciones.sort((a, b) => a.id - b.id);
+
+                // Obtener actividades
+                const responseActividades = await fetch(`http://centroscivicos.local/api/centros/${id}/actividades`);
+                if (!responseActividades.ok) throw new Error('Actividades no encontradas');
+                const nuevasActividades = await responseActividades.json();
+                nuevasActividades.forEach((nuevaActividad: any) => {
+                    if (!actividades.some(actividad => actividad.id === nuevaActividad.id)) {
+                        actividades.push(nuevaActividad);
+                    }
+                });
+                actividades.sort((a, b) => a.id - b.id);
+            }
+
+            const responseReservas = await fetch(`http://centroscivicos.local/api/reservas/`,{
+                    method: 'GET',  // Tipo de solicitud
+                    headers: {
+                    'Content-Type': 'application/json',  // Indicamos el tipo de contenido
+                    'Authorization': `Bearer ${token}`   // Pasamos el token en el encabezado Authorization
+                }
+            });
+            if (!responseReservas.ok) {
+                console.error('Reservas no encontradas');
+                reservas = [];
+            } else {
+                reservas = await responseReservas.json();
+            }
+
+            const responseInscripciones = await fetch(`http://centroscivicos.local/api/inscripciones/`,{
+                    method: 'GET',  // Tipo de solicitud
+                    headers: {
+                    'Content-Type': 'application/json',  // Indicamos el tipo de contenido
+                    'Authorization': `Bearer ${token}`   // Pasamos el token en el encabezado Authorization
+                }
+            });
+            if (!responseInscripciones.ok) {
+                console.error('Inscripciones no encontradas');
+                inscripciones = [];
+            } else {
+                inscripciones = await responseInscripciones.json();
+            }
+
+            if (reservas.length === 0) {
+                const noReservasMessage = document.createElement('p');
+                noReservasMessage.textContent = 'No hay ninguna reserva.';
+                const reservasElement = document.getElementById('reservas');
+                if (reservasElement) {
+                    reservasElement.appendChild(noReservasMessage);
+                }
+            } else {
+                for(let reserva of reservas) {
+                    const instalacion_id = reserva.instalacion_id;
+
+                    for(let instalacion of instalaciones){
+                        if(instalacion.id == instalacion_id){
+                            nombresInstalaciones.push(instalacion.nombre);
+                        }
+                        for(let centro of centros){
+                            if(instalacion.centro_id == centro.id){
+                                if (!nombresCentros.includes(centro.nombre)) {
+                                    nombresCentros.push(centro.nombre);
+                                }
+                            }
+                        }    
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-white shadow-md rounded p-4 mb-4';
+
+                    const reservaSolicitante = document.createElement('p');
+                    reservaSolicitante.innerHTML = `<strong>Solicitante:</strong> ${reserva.solicitante}`;
+                    card.appendChild(reservaSolicitante);
+
+                    const telefono = document.createElement('p');
+                    telefono.innerHTML = `<strong>Telefono:</strong> ${reserva.telefono}`;
+                    card.appendChild(telefono);
+
+                    const email = document.createElement('p');
+                    email.innerHTML = `<strong>E-mail:</strong> ${reserva.email}`;
+                    card.appendChild(email);
+
+                    const centroNombre = document.createElement('p');
+                    centroNombre.innerHTML = `<strong>Centro:</strong> ${nombresCentros[nombresCentros.length - 1]}`;
+                    card.appendChild(centroNombre);
+
+                    const instalacionNombre = document.createElement('p');
+                    instalacionNombre.innerHTML = `<strong>Instalación:</strong> ${nombresInstalaciones[nombresInstalaciones.length - 1]}`;
+                    card.appendChild(instalacionNombre);
+
+                    const fecha_inicio = document.createElement('p');
+                    fecha_inicio.innerHTML = `<strong>Hora de Inicio:</strong> ${reserva.fecha_inicio}`;
+                    card.appendChild(fecha_inicio);
+
+                    const fecha_fin = document.createElement('p');
+                    fecha_fin.innerHTML = `<strong>Hora de Fin:</strong> ${reserva.fecha_fin}`;
+                    card.appendChild(fecha_fin);
+
+                    const estado = document.createElement('p');
+                    estado.innerHTML = `<strong>Estado:</strong> ${reserva.estado}`;
+                    card.appendChild(estado);
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.className = 'bg-red-500 text-white p-2 rounded mt-2';
+                    deleteButton.addEventListener('click', async () => {
+                        if(confirm("Estas seguro de que quieres eliminar la reserva de " + reserva.solicitante + "?")){
+                            try {
+                                const response = await fetch(`http://centroscivicos.local/api/reservas/${reserva.id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                if (!response.ok) throw new Error('Error al eliminar la reserva');
+                                alert("La reserva ha sido eliminada con exito");
+                                card.remove();
+                            } catch (error) {
+                                console.error('Error al eliminar la reserva:', error);
+                            }
+                        }
+                    });
+                    card.appendChild(deleteButton);
+
+                    const reservasElement = document.getElementById('reservas');
+                    if (reservasElement) {
+                        reservasElement.appendChild(card);
+                    }
+                }
+            }
+
+            if (inscripciones.length === 0) {
+                const noInscripcionesMessage = document.createElement('p');
+                noInscripcionesMessage.textContent = 'No hay ninguna inscripción.';
+                const inscripcionesElement = document.getElementById('inscripciones');
+                if (inscripcionesElement) {
+                    inscripcionesElement.appendChild(noInscripcionesMessage);
+                }
+            } else {
+                for(let inscripcion of inscripciones) {
+                    const actividad_id = inscripcion.actividad_id;
+
+                    for(let actividad of actividades){
+                        if(actividad.id == actividad_id){
+                            nombresInstalaciones.push(actividad.nombre);
+                        }
+                        for(let centro of centros){
+                            if(actividad.centro_id == centro.id){
+                                if (!nombresCentros.includes(centro.nombre)) {
+                                    nombresCentros.push(centro.nombre);
+                                }
+                            }
+                        }    
+                    }
+
+                    const listItem = document.createElement('div');
+                    listItem.className = 'bg-white shadow-md rounded p-4 mb-4';
+
+                    const inscripcionSolicitante = document.createElement('p');
+                    inscripcionSolicitante.innerHTML = `<strong>Solicitante:</strong> ${inscripcion.solicitante}`;
+                    listItem.appendChild(inscripcionSolicitante);
+
+                    const telefono = document.createElement('p');
+                    telefono.innerHTML = `<strong>Telefono:</strong> ${inscripcion.telefono}`;
+                    listItem.appendChild(telefono);
+
+                    const email = document.createElement('p');
+                    email.innerHTML = `<strong>E-mail:</strong> ${inscripcion.email}`;
+                    listItem.appendChild(email);
+
+                    const centroNombre = document.createElement('p');
+                    centroNombre.innerHTML = `<strong>Centro:</strong> ${nombresCentros[nombresCentros.length - 1]}`;
+                    listItem.appendChild(centroNombre);
+
+                    const actividadNombre = document.createElement('p');
+                    actividadNombre.innerHTML = `<strong>Actividad:</strong> ${nombresInstalaciones[nombresInstalaciones.length - 1]}`;
+                    listItem.appendChild(actividadNombre);
+
+                    const fecha_inscripcion = document.createElement('p');
+                    fecha_inscripcion.innerHTML = `<strong>Fecha de Inscripcion:</strong> ${inscripcion.fecha_inscripcion}`;
+                    listItem.appendChild(fecha_inscripcion);
+
+                    const estado = document.createElement('p');
+                    estado.innerHTML = `<strong>Estado:</strong> ${inscripcion.estado}`;
+                    listItem.appendChild(estado);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.className = 'bg-red-500 text-white p-2 rounded mt-2';
+                    deleteButton.addEventListener('click', async () => {
+                        try {
+                            const response = await fetch(`http://centroscivicos.local/api/inscripciones/${inscripcion.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                }
+                            });
+                            if (!response.ok) throw new Error('Error al eliminar la inscripción');
+                            listItem.remove();
+                        } catch (error) {
+                            console.error('Error al eliminar la inscripción:', error);
+                        }
+                    });
+                    listItem.appendChild(deleteButton);
+
+                    const inscripcionesElement = document.getElementById('inscripciones');
+                    if (inscripcionesElement) {
+                        inscripcionesElement.appendChild(listItem);
+                    }
+                }
+            }
+
+        } catch (error) {
+            console.error('Error al cargar la información:', error);
+        }
+    </script>
+</head>
+<body class="bg-gray-100 p-6">
+    <header class="bg-blue-500 text-white text-center p-4">
+        <h1 class="text-2xl font-bold">Perfil de usuario</h1>
+    </header>
+    <main class="container mx-auto mt-6">
+        <section class="bg-white shadow-md rounded p-4">
+            <h2 class="text-lg font-bold">Datos del usuario</h2>
+            <p><strong>Nombre:</strong> <span id="nombre">Cargando...</span></p>
+            <p><strong>Email:</strong> <span id="email">Cargando...</span></p>
+            <a href="/perfilEditar" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out mb-4">Editar</a>
+        </section>
+        <section class="bg-white shadow-md rounded p-4 mt-4">
+            <h2 class="text-lg font-bold">Reservas</h2>
+            <div id="reservas" class="flex flex-wrap gap-4"></div>
+        </section>
+        <section class="bg-white shadow-md rounded p-4 mt-4">
+            <h2 class="text-lg font-bold">Inscripciones</h2>
+            <div id="inscripciones" class="flex flex-wrap gap-4"></div>
+        </section>
+    </main>
+</body>
+</html>
